@@ -5,6 +5,7 @@ import CalibrationPanel from "./components/CalibrationPanel"
 import { supabase } from '../supabaseClient'
 const createPlotlyComponent = factory.default ?? factory
 const Plot = createPlotlyComponent(Plotly)
+const API_URL = import.meta.env.VITE_API_URL
 
 const DEFAULT_PARAMS = {
   S0: 100, K: 100, T: 1.0,
@@ -35,7 +36,7 @@ function Pricer() {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch("http://127.0.0.1:8000/price", {
+      const res = await fetch(`${API_URL}/price`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(params)
@@ -55,7 +56,7 @@ function Pricer() {
     setError(null)
     try {
       const { S0, r, q, kappa, theta, sigma, rho, v0 } = params
-      const res = await fetch("http://127.0.0.1:8000/surface", {
+      const res = await fetch(`${API_URL}/surface`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ S0, r, q, kappa, theta, sigma, rho, v0 })

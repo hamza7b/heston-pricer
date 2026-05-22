@@ -1,4 +1,5 @@
 import { useState } from "react"
+const API_URL = import.meta.env.VITE_API_URL
 
 const TABS = ["Paste data", "Fetch by ticker"]
 
@@ -23,7 +24,7 @@ function CalibrationPanel({ onCalibrated }) {
     setError(null)
     setResult(null)
     try {
-      const res = await fetch("http://127.0.0.1:8000/calibrate", {
+      const res = await fetch(`${API_URL}/calibrate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -56,7 +57,7 @@ function CalibrationPanel({ onCalibrated }) {
       if (!chainRes.ok) throw new Error(chain.detail)
 
       // Step 2 — calibrate
-      const calRes = await fetch("http://127.0.0.1:8000/calibrate", {
+      const calRes = await fetch(`${API_URL}/calibrate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
