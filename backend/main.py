@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 
 from heston.pricer import HestonParams, heston_call_price, heston_put_price, heston_fft_calls
 from heston.black_scholes import implied_vol
+from heston.calibration import calibrate as run_calibration
 import numpy as np
 
 app = FastAPI(title="Heston Pricer API")
@@ -54,6 +55,26 @@ class PriceResponse(BaseModel):
     S0: float
     K: float
     T: float
+
+class CalibrationRequest(BaseModel):
+    S0: float = Field(..., gt=0, description="Spot price")
+    r:  float = Field(...,       description="Risk-free rate")
+    q:  float = Field(0.0,       description="Dividend yield")
+    strikes:    list[float] = Field(..., description="Market strikes")
+    maturities: list[float] = Field(..., description="Maturities in years (same length as strikes)")
+    prices:     list[float] = Field(..., description="Market call prices (same length as strikes)")
+    initial_params: list[float] | None = Field(None, description="Optional starting guess [kappa, theta, sigma, rho, v0]")
+
+class CalibrationResponse(BaseModel):
+    kappa:      float
+    theta:      float
+    sigma:      float
+    rho:        float
+    v0:         float
+    error:      float
+    success:    bool
+    method:     str
+    iterations: int
 
 
 # ---------- endpoints ----------
@@ -114,3 +135,42 @@ def vol_surface(req: SurfaceRequest):
         "maturities": maturities,
         "surface": surface
     }
+
+@app.post("/calibrate", response_model=CalibrationResponse)
+def calibrate_model(req: CalibrationRequest):
+    if not (len(req.strikes) == len(req.maturities) == len(req.prices)):
+        raise HTTPException(
+            status_code=422,
+            detail="strikes, maturities and prices must all have the same length."
+        )
+    if len(req.strikes) < 5:
+        raise HTTPException(
+            status_code=422,
+            detail="At least 5 market options are required for calibration."
+        )
+
+    try:
+        result = run_calibration(
+            market_strikes=np.array(req.strikes),
+            market_maturities=np.array(req.maturities),
+            market_prices=np.array(req.prices),
+            S0=req.S0,
+            r=req.r,
+            q=req.q,
+            initial_params=req.initial_params,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    p = result["params"]
+    return CalibrationResponse(
+        kappa=round(p.kappa, 6),
+        theta=round(p.theta, 6),
+        sigma=round(p.sigma, 6),
+        rho=round(p.rho,   6),
+        v0=round(p.v0,     6),
+        error=round(result["error"], 8),
+        success=result["success"],
+        method=result["method"],
+        iterations=result["iterations"],
+    )
