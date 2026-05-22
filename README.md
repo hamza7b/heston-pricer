@@ -1,8 +1,8 @@
 # Heston Pricer
 
 An interactive, fully deployed options pricer built on the Heston stochastic volatility model.
-Price European calls and puts, visualize the implied volatility surface in 3D, and explore the
-math behind the model all in the browser.
+Price European calls and puts, visualize the implied volatility surface in 3D, and calibrate
+model parameters to live market data — all in the browser.
 
 **[Live Demo →](https://heston-pricer.vercel.app)** &nbsp;|&nbsp; **[API Docs →](https://heston-pricer.onrender.com/docs)**
 
@@ -13,6 +13,8 @@ math behind the model all in the browser.
 - Prices European call and put options using the **Heston (1993)** stochastic volatility model
 - Computes prices via **Carr-Madan FFT** — a whole strike grid in one pass at O(N log N)
 - Renders a live **3D implied volatility surface** across strikes and maturities
+- **Calibrates** to real market data by ticker or manual input via least-squares optimization
+- Saves calibration sessions to **Supabase** for later retrieval
 - Includes a **/learn page** — a self-contained guide to the model from first principles
 - Exposes a clean **REST API** for programmatic access
 
@@ -70,24 +72,27 @@ for numerical stability near the branch cut.
 heston_pricer/
 ├── frontend/
 │   └── src/
-│       ├── App.jsx                      # Router (/ and /learn)
-│       ├── pages/
-│       │   ├── Pricer.jsx               # Pricing form + 3D vol surface
-│       │   ├── Learn.jsx                # /learn page container
-│       │   └── components/learn/        # One component per section
-│       │       ├── SectionWrapper.jsx
-│       │       ├── S1_WhyVolModel.jsx
-│       │       ├── S2_BlackScholes.jsx
-│       │       ├── S3_HestonModel.jsx
-│       │       ├── S4_Pricing.jsx
-│       │       ├── S5_Calibration.jsx
-│       │       └── S6_TryIt.jsx
+│       ├── App.jsx                          # Router (/ → Learn, /pricer → Pricer)
+│       ├── components/
+│       │   ├── Math.jsx                     # Custom KaTeX renderer (BlockMath, InlineMath)
+│       │   └── CalibrationPanel.jsx         # Calibration UI (paste data or fetch by ticker)
+│       └── pages/
+│           ├── Pricer.jsx                   # Pricing form + 3D vol surface
+│           └── Learn.jsx                    # /learn page container
+│               └── components/learn/
+│                   ├── SectionWrapper.jsx
+│                   ├── S1_WhyVolModel.jsx
+│                   ├── S2_BlackScholes.jsx
+│                   ├── S3_HestonModel.jsx
+│                   ├── S4_Pricing.jsx
+│                   ├── S5_Calibration.jsx
+│                   └── S6_TryIt.jsx
 └── backend/
-├── main.py                          # API endpoints
-└── heston/
-├── pricer.py                    # Characteristic function + Carr-Madan FFT
-├── black_scholes.py             # BS pricer + implied vol inversion (Brent)
-└── calibration.py              # Least-squares calibration (scipy)
+    ├── main.py                              # API endpoints
+    └── heston/
+        ├── pricer.py                        # Characteristic function + Carr-Madan FFT
+        ├── black_scholes.py                 # BS pricer + implied vol inversion (Brent)
+        └── calibration.py                   # Least-squares calibration (scipy)
 ```
 
 ---
@@ -98,7 +103,7 @@ heston_pricer/
 ```bash
 cd backend
 python -m venv .venv && source .venv/bin/activate
-pip install fastapi uvicorn numpy scipy pydantic
+pip install -r requirements.txt
 uvicorn main:app --reload
 # API running at http://localhost:8000
 # Docs at http://localhost:8000/docs
@@ -112,6 +117,13 @@ npm run dev
 # App running at http://localhost:5173
 ```
 
+Create `frontend/.env`:
+```
+VITE_API_URL=http://localhost:8000
+VITE_SUPABASE_URL=your-supabase-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
 ---
 
 ## API
@@ -120,7 +132,7 @@ npm run dev
 Price a single European option.
 
 ```bash
-curl -X POST http://localhost:8000/price \
+curl -X POST https://heston-pricer.onrender.com/price \
   -H "Content-Type: application/json" \
   -d '{
     "S0": 100, "K": 100, "T": 1.0,
@@ -140,22 +152,29 @@ Compute the implied volatility surface across a 20×6 grid of strikes and maturi
 
 ```json
 {
-  "strikes": [70.0, ..., 130.0],
+  "strikes": [70.0, "...", 130.0],
   "maturities": [0.25, 0.5, 0.75, 1.0, 1.5, 2.0],
-  "surface": [[26.88, ...], ...]
+  "surface": [[26.88, "..."], "..."]
 }
 ```
+
+### `POST /calibrate`
+Calibrate Heston parameters to market option prices via least-squares.
+
+### `GET /options/{ticker}`
+Fetch live option chain from Yahoo Finance for a given ticker.
 
 ---
 
 ## Roadmap
 
 - [x] Heston pricer (Carr-Madan FFT)
-- [x] Implied volatility surface
+- [x] Implied volatility surface (3D)
 - [x] Calibration to market data (scipy least-squares)
-- [x] Greeks (delta, vega, gamma)
+- [x] Live ticker calibration via Yahoo Finance
 - [x] Supabase: save and load calibration sessions
-- [ ] Deploy to Vercel + Render
+- [x] /learn page with full math explainer
+- [x] Deployed to Vercel + Render
 
 ---
 
