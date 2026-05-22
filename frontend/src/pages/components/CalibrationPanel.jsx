@@ -52,7 +52,7 @@ function CalibrationPanel({ onCalibrated }) {
     setResult(null)
     try {
       // Step 1 — fetch option chain
-      const chainRes = await fetch(`http://127.0.0.1:8000/options/${ticker.toUpperCase()}`)
+      const chainRes = await fetch(`${API_URL}/options/${ticker.toUpperCase()}`)
       const chain = await chainRes.json()
       if (!chainRes.ok) throw new Error(chain.detail)
 
