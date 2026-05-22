@@ -1,0 +1,83 @@
+import SectionWrapper from "./SectionWrapper"
+import { InlineMath, BlockMath } from "react-katex"
+
+function S4_Pricing() {
+  return (
+    <SectionWrapper title="4 — How Heston Prices Options">
+      <p>
+        Black-Scholes has a closed-form formula you can evaluate directly. Heston doesn't —
+        the stochastic variance makes the distribution of <InlineMath math="S_T" /> too complex
+        to write down in simple terms. So how do we get a price?
+      </p>
+      <p>
+        The answer is to work in <em>frequency space</em> using a mathematical object called
+        the <strong>characteristic function</strong>.
+      </p>
+
+      <h3 style={{ fontFamily: "monospace", marginTop: "2rem" }}>The characteristic function</h3>
+      <p>
+        The characteristic function of a random variable <InlineMath math="X" /> is defined as:
+      </p>
+      <BlockMath math="\phi(u) = \mathbb{E}\left[e^{iuX}\right]" />
+      <p>
+        Think of it as the Fourier transform of the probability distribution of <InlineMath math="X" />.
+        It encodes the full distribution — mean, variance, skewness, everything — in a single function of <InlineMath math="u" />.
+      </p>
+      <p>
+        The remarkable fact about Heston is that even though the distribution of <InlineMath math="\ln S_T" />
+        has no simple closed form, its characteristic function <em>does</em>:
+      </p>
+      <BlockMath math="\phi_T(u) = \mathbb{E}\left[e^{iu \ln S_T}\right] = e^{C(u,T) + D(u,T) v_0 + iu \ln S_0}" />
+      <p>
+        where <InlineMath math="C" /> and <InlineMath math="D" /> are known functions of the
+        Heston parameters <InlineMath math="\kappa, \theta, \sigma, \rho" /> and time <InlineMath math="T" />.
+        This is the key result that makes Heston tractable.
+      </p>
+
+      <h3 style={{ fontFamily: "monospace", marginTop: "2rem" }}>Gil-Pelaez inversion</h3>
+      <p>
+        Once we have the characteristic function, we can recover option prices via the
+        Gil-Pelaez inversion theorem. For a European call:
+      </p>
+      <BlockMath math="C = S_0 e^{-qT} P_1 - K e^{-rT} P_2" />
+      <p>
+        This looks just like Black-Scholes — and intentionally so. The two probabilities are:
+      </p>
+      <BlockMath math="P_j = \frac{1}{2} + \frac{1}{\pi} \int_0^\infty \text{Re}\left[\frac{e^{-iu\ln K} \phi_j(u)}{iu}\right] du" />
+      <p>
+        <InlineMath math="P_2" /> is the risk-neutral probability of expiring in the money.
+        <InlineMath math="P_1" /> is a similar probability weighted by the stock price.
+        Both are recovered by integrating the characteristic function numerically.
+      </p>
+
+      <h3 style={{ fontFamily: "monospace", marginTop: "2rem" }}>Carr-Madan FFT</h3>
+      <p>
+        Evaluating the integral above for every single strike separately is slow. The
+        Carr-Madan method reformulates the problem so that a single
+        Fast Fourier Transform prices the option across an <em>entire grid of strikes at once</em> —
+        reducing the cost from <InlineMath math="O(N^2)" /> to <InlineMath math="O(N \log N)" />.
+      </p>
+      <p>
+        This is what the pricer in this app uses under the hood. When you click
+        "Vol Surface", it runs one FFT pass to compute implied volatilities across
+        120 strike-maturity combinations simultaneously.
+      </p>
+
+      <div style={{
+        background: "#f0fff4",
+        border: "1px solid #68d391",
+        borderRadius: 8,
+        padding: "1rem 1.5rem",
+        margin: "1.5rem 0",
+        fontFamily: "monospace",
+        fontSize: "0.9rem"
+      }}>
+        <strong>The key insight in one sentence:</strong><br />
+        We can't integrate the Heston density directly because we don't have it in closed form —
+        but we <em>do</em> have its Fourier transform, and that's enough to price any European option.
+      </div>
+    </SectionWrapper>
+  )
+}
+
+export default S4_Pricing
