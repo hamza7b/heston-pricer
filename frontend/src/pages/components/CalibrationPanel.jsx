@@ -87,7 +87,7 @@ function CalibrationPanel({ onCalibrated }) {
       rho:   result.rho,
       v0:    result.v0,
       ...(result.spot ? { S0: result.spot } : {}),
-    })
+    },result.error)
   }
 
   const inputStyle = {

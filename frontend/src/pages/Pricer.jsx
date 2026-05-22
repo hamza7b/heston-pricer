@@ -2,6 +2,7 @@ import { useState } from "react"
 import Plotly from "plotly.js-dist-min"
 import factory from "react-plotly.js/factory"
 import CalibrationPanel from "./components/CalibrationPanel"
+import { supabase } from '../supabaseClient'
 const createPlotlyComponent = factory.default ?? factory
 const Plot = createPlotlyComponent(Plotly)
 
@@ -12,6 +13,8 @@ const DEFAULT_PARAMS = {
   sigma: 0.3, rho: -0.7, v0: 0.04,
   option_type: "call"
 }
+
+
 
 function Pricer() {
   const [params, setParams] = useState(DEFAULT_PARAMS)
@@ -66,6 +69,21 @@ function Pricer() {
       setLoading(false)
     }
   }
+  
+  const saveSession = async (fittedParams, rmse) => {
+    const { error } = await supabase
+        .from('calibration_sessions')
+        .insert({
+        name: `Session ${new Date().toLocaleString()}`,
+        kappa: fittedParams.kappa,
+        theta: fittedParams.theta,
+        sigma: fittedParams.sigma,
+        rho: fittedParams.rho,
+        v0: fittedParams.v0,
+        rmse: rmse ?? null,
+        })
+    if (error) console.error('Save failed:', error)
+}
 
   const fields = [
     { name: "S0", label: "Spot Price" },
@@ -153,7 +171,10 @@ function Pricer() {
           />
         )}
       </div>
-       <CalibrationPanel onCalibrated={(fitted) => setParams(p => ({ ...p, ...fitted }))} />
+       <CalibrationPanel onCalibrated={(fitted, rmse) => {
+            setParams(p => ({ ...p, ...fitted }))
+            saveSession(fitted, rmse)
+        }} />
     </div>
   )
 }
