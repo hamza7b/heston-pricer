@@ -1,5 +1,6 @@
 import SectionWrapper from "./SectionWrapper"
 import { InlineMath, BlockMath } from "react-katex"
+import 'katex/dist/katex.min.css'
 
 function S2_BlackScholes() {
   return (
