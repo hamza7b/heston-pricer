@@ -154,7 +154,7 @@ Compute the implied volatility surface across a 20×6 grid of strikes and maturi
 - [x] Implied volatility surface
 - [x] Calibration to market data (scipy least-squares)
 - [x] Greeks (delta, vega, gamma)
-- [ ] Supabase: save and load calibration sessions
+- [x] Supabase: save and load calibration sessions
 - [ ] Deploy to Vercel + Render
 
 ---
