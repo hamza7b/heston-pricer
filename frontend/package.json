@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.1",
-    "katex": "^0.17.0",
+    "katex": "^0.16.21",
     "plotly.js-dist-min": "^3.5.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
