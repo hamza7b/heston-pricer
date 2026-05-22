@@ -1,4 +1,5 @@
 from typing import Literal
+import yfinance as yf
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -174,3 +175,97 @@ def calibrate_model(req: CalibrationRequest):
         method=result["method"],
         iterations=result["iterations"],
     )
+
+@app.get("/options/{ticker}")
+def get_option_chain(ticker: str):
+    try:
+        tk = yf.Ticker(ticker)
+        spot = tk.fast_info["lastPrice"]
+        if not spot:
+            raise HTTPException(status_code=404, detail=f"Could not fetch spot price for {ticker}")
+
+        expirations = tk.options
+        if not expirations:
+            raise HTTPException(status_code=404, detail=f"No options found for {ticker}")
+
+        strikes    = []
+        maturities = []
+        prices     = []
+
+        today = np.datetime64("today")
+
+        for exp in expirations[:8]:
+            exp_date = np.datetime64(exp)
+            T = float((exp_date - today).astype(int)) / 365.0
+
+            # skip expired or today's expiration
+            if T <= 0.01:
+                continue
+
+            chain = tk.option_chain(exp)
+            calls = chain.calls
+
+            # strike range filter
+            calls = calls[
+                (calls["strike"] >= spot * 0.7) &
+                (calls["strike"] <= spot * 1.3)
+            ]
+
+            if calls.empty:
+                continue
+
+            for _, row in calls.iterrows():
+                bid, ask = row["bid"], row["ask"]
+
+                # use mid if available, fall back to lastPrice
+                if bid > 0 and ask > 0:
+                    mid = (bid + ask) / 2
+                elif row["lastPrice"] > 0:
+                    mid = float(row["lastPrice"])
+                else:
+                    continue
+
+                # skip deep ITM options — price ≈ intrinsic, no vol info
+                intrinsic = max(spot - float(row["strike"]), 0)
+                if mid <= intrinsic * 1.01:
+                    continue
+
+                strikes.append(float(row["strike"]))
+                maturities.append(round(T, 6))
+                prices.append(round(mid, 4))
+
+        if len(strikes) < 5:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Not enough liquid options found for {ticker} (got {len(strikes)}, need at least 5)"
+            )
+
+        return {
+            "ticker":     ticker.upper(),
+            "spot":       round(spot, 2),
+            "strikes":    strikes,
+            "maturities": maturities,
+            "prices":     prices,
+            "count":      len(strikes),
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/debug/{ticker}")
+def debug_option_chain(ticker: str):
+    tk = yf.Ticker(ticker)
+    spot = tk.fast_info["lastPrice"]
+    expirations = tk.options
+    if not expirations:
+        return {"error": "no expirations"}
+    chain = tk.option_chain(expirations[0])
+    calls = chain.calls
+    return {
+        "spot": spot,
+        "expiration": expirations[0],
+        "columns": list(calls.columns),
+        "sample": calls.head(3).to_dict(orient="records")
+    }

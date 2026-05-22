@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Plotly from "plotly.js-dist-min"
 import factory from "react-plotly.js/factory"
+import CalibrationPanel from "./components/CalibrationPanel"
 const createPlotlyComponent = factory.default ?? factory
 const Plot = createPlotlyComponent(Plotly)
 
@@ -152,6 +153,7 @@ function Pricer() {
           />
         )}
       </div>
+       <CalibrationPanel onCalibrated={(fitted) => setParams(p => ({ ...p, ...fitted }))} />
     </div>
   )
 }
