@@ -166,18 +166,6 @@ Fetch live option chain from Yahoo Finance for a given ticker.
 
 ---
 
-## Roadmap
-
-- [x] Heston pricer (Carr-Madan FFT)
-- [x] Implied volatility surface (3D)
-- [x] Calibration to market data (scipy least-squares)
-- [x] Live ticker calibration via Yahoo Finance
-- [x] Supabase: save and load calibration sessions
-- [x] /learn page with full math explainer
-- [x] Deployed to Vercel + Render
-
----
-
 ## References
 
 - Heston, S. (1993). *A closed-form solution for options with stochastic volatility*
