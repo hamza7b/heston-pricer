@@ -1,6 +1,8 @@
 import SectionWrapper from "./SectionWrapper"
 import { InlineMath, BlockMath } from "react-katex"
 import 'katex/dist/katex.min.css'
+import { L2_0, L2_1, L2_2, L2_3, L2_4, L2_5, L2_6 } from "./latex_strings"
+
 
 function S2_BlackScholes() {
   return (
@@ -13,11 +15,11 @@ function S2_BlackScholes() {
 
       <p>The formula prices a European call option as:</p>
 
-      <BlockMath math={String.raw`C = S_0 e^{-qT} N(d_1) - K e^{-rT} N(d_2)`} />
+      <BlockMath math={L2_0} />
 
       <p>where</p>
 
-      <BlockMath math={String.raw`d_1 = \frac{\ln(S_0/K) + (r - q + \frac{1}{2}\sigma^2)T}{\sigma\sqrt{T}}, \quad d_2 = d_1 - \sigma\sqrt{T}`} />
+      <BlockMath math={L2_1} />
 
       <p>The five inputs:</p>
 
@@ -45,9 +47,9 @@ function S2_BlackScholes() {
       </table>
 
       <p>
-        <InlineMath math={String.raw`N(\cdot)`} /> is the cumulative normal distribution —
-        intuitively, <InlineMath math={String.raw`N(d_2)`} /> is the probability the option expires in the money,
-        and <InlineMath math={String.raw`N(d_1)`} /> adjusts for the expected stock price if it does.
+        <InlineMath math={L2_2} /> is the cumulative normal distribution —
+        intuitively, <InlineMath math={L2_3} /> is the probability the option expires in the money,
+        and <InlineMath math={L2_4} /> adjusts for the expected stock price if it does.
       </p>
 
       <div style={{
@@ -60,10 +62,10 @@ function S2_BlackScholes() {
         fontSize: "0.9rem"
       }}>
         <strong>Where it breaks down:</strong><br />
-        Black-Scholes assumes <InlineMath math={String.raw`\sigma`} /> is constant across all strikes and maturities.
+        Black-Scholes assumes <InlineMath math={L2_5} /> is constant across all strikes and maturities.
         But if you back out the implied vol from real market prices at different strikes,
         you get a different number each time — the <strong>volatility smile</strong>.
-        A model with a single <InlineMath math={String.raw`\sigma`} /> cannot reproduce this. That's the gap Heston fills.
+        A model with a single <InlineMath math={L2_6} /> cannot reproduce this. That's the gap Heston fills.
       </div>
     </SectionWrapper>
   )

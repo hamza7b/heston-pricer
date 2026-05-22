@@ -1,12 +1,14 @@
 import SectionWrapper from "./SectionWrapper"
 import { InlineMath, BlockMath } from "react-katex"
+import { L4_0, L4_1, L4_2, L4_3, L4_4, L4_5, L4_6, L4_7, L4_8, L4_9, L4_10, L4_11, L4_12, L4_13, L4_14, L4_15, L4_16 } from "./latex_strings"
+
 
 function S4_Pricing() {
   return (
     <SectionWrapper title="4 — How Heston Prices Options">
       <p>
         Black-Scholes has a closed-form formula you can evaluate directly. Heston doesn't —
-        the stochastic variance makes the distribution of <InlineMath math={String.raw`S_T`} /> too complex
+        the stochastic variance makes the distribution of <InlineMath math={L4_0} /> too complex
         to write down in simple terms. So how do we get a price?
       </p>
       <p>
@@ -16,21 +18,21 @@ function S4_Pricing() {
 
       <h3 style={{ fontFamily: "monospace", marginTop: "2rem" }}>The characteristic function</h3>
       <p>
-        The characteristic function of a random variable <InlineMath math={String.raw`X`} /> is defined as:
+        The characteristic function of a random variable <InlineMath math={L4_1} /> is defined as:
       </p>
-      <BlockMath math={String.raw`\phi(u) = \mathbb{E}\left[e^{iuX}\right]`} />
+      <BlockMath math={L4_2} />
       <p>
-        Think of it as the Fourier transform of the probability distribution of <InlineMath math={String.raw`X`} />.
-        It encodes the full distribution — mean, variance, skewness, everything — in a single function of <InlineMath math={String.raw`u`} />.
+        Think of it as the Fourier transform of the probability distribution of <InlineMath math={L4_3} />.
+        It encodes the full distribution — mean, variance, skewness, everything — in a single function of <InlineMath math={L4_4} />.
       </p>
       <p>
-        The remarkable fact about Heston is that even though the distribution of <InlineMath math={String.raw`\ln S_T`} />
+        The remarkable fact about Heston is that even though the distribution of <InlineMath math={L4_5} />
         has no simple closed form, its characteristic function <em>does</em>:
       </p>
-      <BlockMath math={String.raw`\phi_T(u) = \mathbb{E}\left[e^{iu \ln S_T}\right] = e^{C(u,T) + D(u,T) v_0 + iu \ln S_0}`} />
+      <BlockMath math={L4_6} />
       <p>
-        where <InlineMath math={String.raw`C`} /> and <InlineMath math={String.raw`D`} /> are known functions of the
-        Heston parameters <InlineMath math={String.raw`\kappa, \theta, \sigma, \rho`} /> and time <InlineMath math={String.raw`T`} />.
+        where <InlineMath math={L4_7} /> and <InlineMath math={L4_8} /> are known functions of the
+        Heston parameters <InlineMath math={L4_9} /> and time <InlineMath math={L4_10} />.
         This is the key result that makes Heston tractable.
       </p>
 
@@ -39,14 +41,14 @@ function S4_Pricing() {
         Once we have the characteristic function, we can recover option prices via the
         Gil-Pelaez inversion theorem. For a European call:
       </p>
-      <BlockMath math={String.raw`C = S_0 e^{-qT} P_1 - K e^{-rT} P_2`} />
+      <BlockMath math={L4_11} />
       <p>
         This looks just like Black-Scholes — and intentionally so. The two probabilities are:
       </p>
-      <BlockMath math={String.raw`P_j = \frac{1}{2} + \frac{1}{\pi} \int_0^\infty \text{Re}\left[\frac{e^{-iu\ln K} \phi_j(u)}{iu}\right] du`} />
+      <BlockMath math={L4_12} />
       <p>
-        <InlineMath math={String.raw`P_2`} /> is the risk-neutral probability of expiring in the money.
-        <InlineMath math={String.raw`P_1`} /> is a similar probability weighted by the stock price.
+        <InlineMath math={L4_13} /> is the risk-neutral probability of expiring in the money.
+        <InlineMath math={L4_14} /> is a similar probability weighted by the stock price.
         Both are recovered by integrating the characteristic function numerically.
       </p>
 
@@ -55,7 +57,7 @@ function S4_Pricing() {
         Evaluating the integral above for every single strike separately is slow. The
         Carr-Madan method reformulates the problem so that a single
         Fast Fourier Transform prices the option across an <em>entire grid of strikes at once</em> —
-        reducing the cost from <InlineMath math={String.raw`O(N^2)`} /> to <InlineMath math={String.raw`O(N \log N)`} />.
+        reducing the cost from <InlineMath math={L4_15} /> to <InlineMath math={L4_16} />.
       </p>
       <p>
         This is what the pricer in this app uses under the hood. When you click
