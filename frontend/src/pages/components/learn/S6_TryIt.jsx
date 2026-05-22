@@ -21,7 +21,7 @@ function S6_TryIt() {
 
       <div style={{ marginTop: "2rem" }}>
         <Link
-          to="/"
+          to="/pricer"
           style={{
             display: "inline-block",
             padding: "0.75rem 2rem",
