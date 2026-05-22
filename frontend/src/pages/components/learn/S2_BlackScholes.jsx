@@ -13,11 +13,11 @@ function S2_BlackScholes() {
 
       <p>The formula prices a European call option as:</p>
 
-      <BlockMath math="C = S_0 e^{-qT} N(d_1) - K e^{-rT} N(d_2)" />
+      <BlockMath math={String.raw`C = S_0 e^{-qT} N(d_1) - K e^{-rT} N(d_2)`} />
 
       <p>where</p>
 
-      <BlockMath math="d_1 = \frac{\ln(S_0/K) + (r - q + \frac{1}{2}\sigma^2)T}{\sigma\sqrt{T}}, \quad d_2 = d_1 - \sigma\sqrt{T}" />
+      <BlockMath math={String.raw`d_1 = \frac{\ln(S_0/K) + (r - q + \frac{1}{2}\sigma^2)T}{\sigma\sqrt{T}}, \quad d_2 = d_1 - \sigma\sqrt{T}`} />
 
       <p>The five inputs:</p>
 
@@ -45,9 +45,9 @@ function S2_BlackScholes() {
       </table>
 
       <p>
-        <InlineMath math="N(\cdot)" /> is the cumulative normal distribution —
-        intuitively, <InlineMath math="N(d_2)" /> is the probability the option expires in the money,
-        and <InlineMath math="N(d_1)" /> adjusts for the expected stock price if it does.
+        <InlineMath math={String.raw`N(\cdot)`} /> is the cumulative normal distribution —
+        intuitively, <InlineMath math={String.raw`N(d_2)`} /> is the probability the option expires in the money,
+        and <InlineMath math={String.raw`N(d_1)`} /> adjusts for the expected stock price if it does.
       </p>
 
       <div style={{
@@ -60,10 +60,10 @@ function S2_BlackScholes() {
         fontSize: "0.9rem"
       }}>
         <strong>Where it breaks down:</strong><br />
-        Black-Scholes assumes <InlineMath math="\sigma" /> is constant across all strikes and maturities.
+        Black-Scholes assumes <InlineMath math={String.raw`\sigma`} /> is constant across all strikes and maturities.
         But if you back out the implied vol from real market prices at different strikes,
         you get a different number each time — the <strong>volatility smile</strong>.
-        A model with a single <InlineMath math="\sigma" /> cannot reproduce this. That's the gap Heston fills.
+        A model with a single <InlineMath math={String.raw`\sigma`} /> cannot reproduce this. That's the gap Heston fills.
       </div>
     </SectionWrapper>
   )

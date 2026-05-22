@@ -6,8 +6,8 @@ function S3_HestonModel() {
     <SectionWrapper title="3 — The Heston Model">
       <p>
         The Heston model, introduced by Steven Heston in 1993, fixes Black-Scholes' core flaw
-        by letting volatility evolve randomly over time. Instead of one fixed <InlineMath math="\sigma" />,
-        the variance <InlineMath math="v_t" /> is itself a stochastic process with its own dynamics.
+        by letting volatility evolve randomly over time. Instead of one fixed <InlineMath math={String.raw`\sigma`} />,
+        the variance <InlineMath math={String.raw`v_t`} /> is itself a stochastic process with its own dynamics.
       </p>
 
       <h3 style={{ fontFamily: "monospace", marginTop: "2rem" }}>The two SDEs</h3>
@@ -16,20 +16,20 @@ function S3_HestonModel() {
         stock price, one for its variance:
       </p>
 
-      <BlockMath math="dS_t = r S_t \, dt + \sqrt{v_t} \, S_t \, dW^1_t" />
-      <BlockMath math="dv_t = \kappa(\theta - v_t) \, dt + \sigma \sqrt{v_t} \, dW^2_t" />
-      <BlockMath math="dW^1_t \, dW^2_t = \rho \, dt" />
+      <BlockMath math={String.raw`dS_t = r S_t \, dt + \sqrt{v_t} \, S_t \, dW^1_t`} />
+      <BlockMath math={String.raw`dv_t = \kappa(\theta - v_t) \, dt + \sigma \sqrt{v_t} \, dW^2_t`} />
+      <BlockMath math={String.raw`dW^1_t \, dW^2_t = \rho \, dt`} />
 
       <p>
-        The first equation says the stock drifts at the risk-free rate <InlineMath math="r" /> and
-        is driven by a random shock <InlineMath math="dW^1_t" /> scaled by the <em>current</em> volatility <InlineMath math="\sqrt{v_t}" />.
+        The first equation says the stock drifts at the risk-free rate <InlineMath math={String.raw`r`} /> and
+        is driven by a random shock <InlineMath math={String.raw`dW^1_t`} /> scaled by the <em>current</em> volatility <InlineMath math={String.raw`\sqrt{v_t}`} />.
         Unlike Black-Scholes, that volatility is no longer fixed — it changes every instant.
       </p>
       <p>
         The second equation describes how variance evolves. It's pulled back toward a long-run
-        level <InlineMath math="\theta" /> at speed <InlineMath math="\kappa" />, and is perturbed
-        by its own random shock <InlineMath math="dW^2_t" />. The two shocks are correlated
-        with coefficient <InlineMath math="\rho" />.
+        level <InlineMath math={String.raw`\theta`} /> at speed <InlineMath math={String.raw`\kappa`} />, and is perturbed
+        by its own random shock <InlineMath math={String.raw`dW^2_t`} />. The two shocks are correlated
+        with coefficient <InlineMath math={String.raw`\rho`} />.
       </p>
 
       <h3 style={{ fontFamily: "monospace", marginTop: "2rem" }}>The five parameters</h3>
@@ -63,7 +63,7 @@ function S3_HestonModel() {
       <p>
         For variance to stay strictly positive (never hit zero), the parameters must satisfy:
       </p>
-      <BlockMath math="2\kappa\theta > \sigma^2" />
+      <BlockMath math={String.raw`2\kappa\theta > \sigma^2`} />
       <p>
         Intuitively: the mean-reversion force pulling variance back up must be stronger than
         the random shocks pushing it down. If this condition is violated, variance can reach
@@ -81,10 +81,10 @@ function S3_HestonModel() {
         fontSize: "0.9rem"
       }}>
         <strong>Why this produces a smile:</strong><br />
-        The negative correlation <InlineMath math="\rho &lt; 0" /> means stock drops and vol spikes
+        The negative correlation <InlineMath math={String.raw`\rho &lt; 0`} /> means stock drops and vol spikes
         tend to happen together — the <em>leverage effect</em>. This makes downside options
         relatively more expensive, generating the skew seen in equity markets.
-        The vol-of-vol parameter <InlineMath math="\sigma" /> adds curvature to both wings,
+        The vol-of-vol parameter <InlineMath math={String.raw`\sigma`} /> adds curvature to both wings,
         producing the full smile shape.
       </div>
     </SectionWrapper>

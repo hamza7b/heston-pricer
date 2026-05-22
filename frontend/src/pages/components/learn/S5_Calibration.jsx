@@ -5,7 +5,7 @@ function S5_Calibration() {
   return (
     <SectionWrapper title="5 — Calibration">
       <p>
-        The Heston model has five parameters: <InlineMath math="\kappa, \theta, \sigma, \rho, v_0" />.
+        The Heston model has five parameters: <InlineMath math={String.raw`\kappa, \theta, \sigma, \rho, v_0`} />.
         But where do these numbers come from in practice? You can't observe them directly —
         you have to <em>infer</em> them from market prices. That process is called <strong>calibration</strong>.
       </p>
@@ -21,7 +21,7 @@ function S5_Calibration() {
         Concretely, you minimize the sum of squared differences between model prices
         and market prices across all available options:
       </p>
-      <BlockMath math="\min_{\kappa,\theta,\sigma,\rho,v_0} \sum_{i=1}^{N} \left( C_{\text{model}}(K_i, T_i) - C_{\text{market}}(K_i, T_i) \right)^2" />
+      <BlockMath math={String.raw`\min_{\kappa,\theta,\sigma,\rho,v_0} \sum_{i=1}^{N} \left( C_{\text{model}}(K_i, T_i) - C_{\text{market}}(K_i, T_i) \right)^2`} />
 
       <h3 style={{ fontFamily: "monospace", marginTop: "2rem" }}>How it works in practice</h3>
       <p>
@@ -64,7 +64,7 @@ function S5_Calibration() {
         <li>Sensitivity to the initial parameter guess</li>
         <li>The Feller condition being violated during optimization</li>
         <li>Overfitting to noise in the market data</li>
-        <li>Slow convergence when <InlineMath math="\sigma" /> and <InlineMath math="\rho" /> are highly correlated</li>
+        <li>Slow convergence when <InlineMath math={String.raw`\sigma`} /> and <InlineMath math={String.raw`\rho`} /> are highly correlated</li>
       </ul>
 
       <div style={{
