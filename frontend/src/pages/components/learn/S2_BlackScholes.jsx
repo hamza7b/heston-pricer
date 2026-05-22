@@ -5,7 +5,7 @@ import { L2_0, L2_1, L2_2, L2_3, L2_4, L2_5, L2_6 } from "./latex_strings"
 
 function S2_BlackScholes() {
   return (
-    <SectionWrapper title="2 — Black-Scholes in 60 seconds">
+    <SectionWrapper title="2 — Black-Scholes: The Starting Point">
       <p>
         Before Heston, there was Black-Scholes — published in 1973, it was the first rigorous
         framework for pricing options. It earned its authors the Nobel Prize and is still the
