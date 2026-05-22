@@ -2,7 +2,7 @@
 
 An interactive, fully deployed options pricer built on the Heston stochastic volatility model.
 Price European calls and puts, visualize the implied volatility surface in 3D, and explore the
-math behind the model — all in the browser.
+math behind the model all in the browser.
 
 **[Live Demo →](https://heston-pricer.vercel.app)** &nbsp;|&nbsp; **[API Docs →](https://heston-pricer.onrender.com/docs)**
 
