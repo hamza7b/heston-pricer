@@ -1,5 +1,5 @@
 import SectionWrapper from "./SectionWrapper"
-import { InlineMath, BlockMath } from "react-katex"
+import { InlineMath, BlockMath } from "./Math"
 import { L5_0, L5_1, L5_2, L5_3 } from "./latex_strings"
 
 
