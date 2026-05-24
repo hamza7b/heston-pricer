@@ -6,6 +6,8 @@ model parameters to live market data — all in the browser.
 
 **[Live Demo →](https://heston-pricer.vercel.app)** &nbsp;|&nbsp; **[API Docs →](https://heston-pricer.onrender.com/docs)**
 
+![Heston Pricer](assets/screenshot.png)
+
 ---
 
 ## What it does
