@@ -65,15 +65,7 @@ function S4_Pricing() {
         120 strike-maturity combinations simultaneously.
       </p>
 
-      <div style={{
-        background: "#f0fff4",
-        border: "1px solid #68d391",
-        borderRadius: 8,
-        padding: "1rem 1.5rem",
-        margin: "1.5rem 0",
-        fontFamily: "monospace",
-        fontSize: "0.9rem"
-      }}>
+      <div className="callout callout-success">
         <strong>The key insight in one sentence:</strong><br />
         We can't integrate the Heston density directly because we don't have it in closed form —
         but we <em>do</em> have its Fourier transform, and that's enough to price any European option.

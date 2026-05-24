@@ -24,7 +24,7 @@ function S2_BlackScholes() {
 
       <table style={{ width: "100%", borderCollapse: "collapse", margin: "1.5rem 0", fontFamily: "monospace", fontSize: "0.9rem" }}>
         <thead>
-          <tr style={{ borderBottom: "2px solid #333" }}>
+          <tr style={{ borderBottom: "2px solid var(--text)" }}>
             <th style={{ textAlign: "left", padding: "0.5rem" }}>Symbol</th>
             <th style={{ textAlign: "left", padding: "0.5rem" }}>Meaning</th>
           </tr>
@@ -37,7 +37,7 @@ function S2_BlackScholes() {
             ["r", "Risk-free interest rate"],
             ["σ", "Volatility — the one number Black-Scholes needs"],
           ].map(([sym, desc]) => (
-            <tr key={sym} style={{ borderBottom: "1px solid #eee" }}>
+            <tr key={sym} style={{ borderBottom: "1px solid var(--border)" }}>
               <td style={{ padding: "0.5rem", fontWeight: "bold" }}>{sym}</td>
               <td style={{ padding: "0.5rem" }}>{desc}</td>
             </tr>
@@ -51,15 +51,7 @@ function S2_BlackScholes() {
         and <InlineMath math={L2_4} /> adjusts for the expected stock price if it does.
       </p>
 
-      <div style={{
-        background: "#fff8e1",
-        border: "1px solid #f0c040",
-        borderRadius: 8,
-        padding: "1rem 1.5rem",
-        margin: "1.5rem 0",
-        fontFamily: "monospace",
-        fontSize: "0.9rem"
-      }}>
+      <div className="callout callout-warning">
         <strong>Where it breaks down:</strong><br />
         Black-Scholes assumes <InlineMath math={L2_5} /> is constant across all strikes and maturities.
         But if you back out the implied vol from real market prices at different strikes,

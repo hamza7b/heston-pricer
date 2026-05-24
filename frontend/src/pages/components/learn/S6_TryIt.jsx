@@ -25,8 +25,8 @@ function S6_TryIt() {
           style={{
             display: "inline-block",
             padding: "0.75rem 2rem",
-            background: "#333",
-            color: "#fff",
+            background: "var(--text-h)",
+            color: "var(--bg)",
             borderRadius: 6,
             textDecoration: "none",
             fontFamily: "monospace",

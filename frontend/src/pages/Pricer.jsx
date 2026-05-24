@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Plotly from "plotly.js-dist-min"
 import factory from "react-plotly.js/factory"
 import CalibrationPanel from "./components/CalibrationPanel"
@@ -17,12 +17,24 @@ const DEFAULT_PARAMS = {
 
 
 
+function useDarkMode() {
+  const mq = window.matchMedia("(prefers-color-scheme: dark)")
+  const [dark, setDark] = useState(mq.matches)
+  useEffect(() => {
+    const handler = (e) => setDark(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+  return dark
+}
+
 function Pricer() {
   const [params, setParams] = useState(DEFAULT_PARAMS)
   const [price, setPrice] = useState(null)
   const [surface, setSurface] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const dark = useDarkMode()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -161,11 +173,33 @@ function Pricer() {
             layout={{
               width: 540,
               height: 480,
-              title: "Implied Volatility Surface",
+              title: {
+                text: "Implied Volatility Surface",
+                font: { color: dark ? "#f3f4f6" : "#08060d" }
+              },
+              paper_bgcolor: dark ? "#16171d" : "#ffffff",
+              plot_bgcolor: dark ? "#16171d" : "#ffffff",
+              font: { color: dark ? "#9ca3af" : "#6b6375" },
               scene: {
-                xaxis: { title: "Strike" },
-                yaxis: { title: "Maturity (yr)" },
-                zaxis: { title: "IV (%)" }
+                bgcolor: dark ? "#16171d" : "#ffffff",
+                xaxis: {
+                  title: "Strike",
+                  color: dark ? "#9ca3af" : "#6b6375",
+                  gridcolor: dark ? "#2e303a" : "#e5e4e7",
+                  linecolor: dark ? "#2e303a" : "#e5e4e7",
+                },
+                yaxis: {
+                  title: "Maturity (yr)",
+                  color: dark ? "#9ca3af" : "#6b6375",
+                  gridcolor: dark ? "#2e303a" : "#e5e4e7",
+                  linecolor: dark ? "#2e303a" : "#e5e4e7",
+                },
+                zaxis: {
+                  title: "IV (%)",
+                  color: dark ? "#9ca3af" : "#6b6375",
+                  gridcolor: dark ? "#2e303a" : "#e5e4e7",
+                  linecolor: dark ? "#2e303a" : "#e5e4e7",
+                },
               },
               margin: { l: 0, r: 0, t: 40, b: 0 }
             }}

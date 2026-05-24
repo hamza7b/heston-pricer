@@ -35,7 +35,7 @@ function S5_Calibration() {
 
       <table style={{ width: "100%", borderCollapse: "collapse", margin: "1.5rem 0", fontFamily: "monospace", fontSize: "0.9rem" }}>
         <thead>
-          <tr style={{ borderBottom: "2px solid #333" }}>
+          <tr style={{ borderBottom: "2px solid var(--text)" }}>
             <th style={{ textAlign: "left", padding: "0.5rem" }}>Step</th>
             <th style={{ textAlign: "left", padding: "0.5rem" }}>What happens</th>
           </tr>
@@ -49,7 +49,7 @@ function S5_Calibration() {
             ["5. Optimize", "Adjust parameters to reduce the error"],
             ["6. Repeat", "Until convergence — typically 100–500 iterations"],
           ].map(([step, desc]) => (
-            <tr key={step} style={{ borderBottom: "1px solid #eee" }}>
+            <tr key={step} style={{ borderBottom: "1px solid var(--border)" }}>
               <td style={{ padding: "0.5rem", fontWeight: "bold" }}>{step}</td>
               <td style={{ padding: "0.5rem" }}>{desc}</td>
             </tr>
@@ -69,15 +69,7 @@ function S5_Calibration() {
         <li>Slow convergence when <InlineMath math={L5_2} /> and <InlineMath math={L5_3} /> are highly correlated</li>
       </ul>
 
-      <div style={{
-        background: "#fff0f0",
-        border: "1px solid #fc8181",
-        borderRadius: 8,
-        padding: "1rem 1.5rem",
-        margin: "1.5rem 0",
-        fontFamily: "monospace",
-        fontSize: "0.9rem"
-      }}>
+      <div className="callout callout-danger">
         <strong>Calibration vs estimation:</strong><br />
         Calibration is not statistical estimation. You're not fitting a model to historical
         returns — you're finding parameters that are <em>consistent with today's market prices</em>.

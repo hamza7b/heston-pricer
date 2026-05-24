@@ -20,15 +20,7 @@ function S1_WhyVolModel() {
         you don't get a flat line. You get a <strong>smile</strong> — implied vol is higher for deep
         in-the-money and out-of-the-money options than for at-the-money ones.
       </p>
-      <div style={{
-        background: "#f9f9f9",
-        border: "1px solid #ddd",
-        borderRadius: 8,
-        padding: "1rem 1.5rem",
-        margin: "1.5rem 0",
-        fontFamily: "monospace",
-        fontSize: "0.9rem"
-      }}>
+      <div className="callout callout-neutral">
         <strong>The problem in one sentence:</strong><br />
         Black-Scholes assumes one volatility for all strikes and maturities.
         The market uses a different one for each. Something is missing from the model.

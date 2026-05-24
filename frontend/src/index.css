@@ -109,3 +109,32 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* Semantic callout boxes — RGBA so they adapt to both light and dark backgrounds */
+.callout {
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+.callout-neutral {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+}
+.callout-warning {
+  background: rgba(240, 192, 64, 0.12);
+  border: 1px solid rgba(240, 192, 64, 0.45);
+}
+.callout-info {
+  background: rgba(99, 130, 238, 0.12);
+  border: 1px solid rgba(99, 130, 238, 0.45);
+}
+.callout-success {
+  background: rgba(104, 211, 145, 0.12);
+  border: 1px solid rgba(104, 211, 145, 0.45);
+}
+.callout-danger {
+  background: rgba(252, 129, 129, 0.12);
+  border: 1px solid rgba(252, 129, 129, 0.45);
+}

@@ -38,7 +38,7 @@ function S3_HestonModel() {
 
       <table style={{ width: "100%", borderCollapse: "collapse", margin: "1.5rem 0", fontFamily: "monospace", fontSize: "0.9rem" }}>
         <thead>
-          <tr style={{ borderBottom: "2px solid #333" }}>
+          <tr style={{ borderBottom: "2px solid var(--text)" }}>
             <th style={{ textAlign: "left", padding: "0.5rem" }}>Parameter</th>
             <th style={{ textAlign: "left", padding: "0.5rem" }}>Meaning</th>
             <th style={{ textAlign: "left", padding: "0.5rem" }}>Intuition</th>
@@ -52,10 +52,10 @@ function S3_HestonModel() {
             ["ρ (rho)", "Correlation", "Typically negative: when stock falls, vol spikes. This creates the skew."],
             ["v₀", "Initial variance", "The variance right now, at time 0. √v₀ is today's instantaneous vol."],
           ].map(([param, meaning, intuition]) => (
-            <tr key={param} style={{ borderBottom: "1px solid #eee" }}>
+            <tr key={param} style={{ borderBottom: "1px solid var(--border)" }}>
               <td style={{ padding: "0.5rem", fontWeight: "bold" }}>{param}</td>
               <td style={{ padding: "0.5rem" }}>{meaning}</td>
-              <td style={{ padding: "0.5rem", color: "#555" }}>{intuition}</td>
+              <td style={{ padding: "0.5rem", color: "var(--text)" }}>{intuition}</td>
             </tr>
           ))}
         </tbody>
@@ -73,15 +73,7 @@ function S3_HestonModel() {
         slightly — it's a known limitation to be aware of.
       </p>
 
-      <div style={{
-        background: "#f0f4ff",
-        border: "1px solid #99aaee",
-        borderRadius: 8,
-        padding: "1rem 1.5rem",
-        margin: "1.5rem 0",
-        fontFamily: "monospace",
-        fontSize: "0.9rem"
-      }}>
+      <div className="callout callout-info">
         <strong>Why this produces a smile:</strong><br />
         The negative correlation <InlineMath math={L3_13} /> means stock drops and vol spikes
         tend to happen together — the <em>leverage effect</em>. This makes downside options

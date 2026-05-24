@@ -2,7 +2,7 @@
 
 An interactive, fully deployed options pricer built on the Heston stochastic volatility model.
 Price European calls and puts, visualize the implied volatility surface in 3D, and calibrate
-model parameters to live market data — all in the browser.
+model parameters to live market data all in the browser.
 
 **[Live Demo →](https://heston-pricer.vercel.app)** &nbsp;|&nbsp; **[API Docs →](https://heston-pricer.onrender.com/docs)**
 
@@ -22,9 +22,9 @@ model parameters to live market data — all in the browser.
 
 ---
 
-## Why Heston
+## The Heston Model
 
-Black-Scholes prices options assuming constant volatility — but real markets show a
+Black-Scholes prices options assuming constant volatility but real markets show a
 **volatility smile**: implied vol varies with strike and maturity. The Heston model fixes
 this by letting volatility itself evolve stochastically.
 
@@ -34,7 +34,7 @@ $$dS_t = rS_t \, dt + \sqrt{v_t} \, S_t \, dW^1_t$$
 
 $$dv_t = \kappa(\theta - v_t) \, dt + \sigma \sqrt{v_t} \, dW^2_t, \qquad dW^1_t \, dW^2_t = \rho \, dt$$
 
-The variance $v_t$ follows a **CIR mean-reverting process** — pulled back toward a long-run
+The variance $v_t$ follows a **CIR mean-reverting process** pulled back toward a long-run
 level $\theta$ at speed $\kappa$, with vol-of-vol $\sigma$.
 
 ### The five parameters
